@@ -36,7 +36,7 @@
     "method-override": "~2.1.2",
     "solidity-sha3": "^0.4.1",
     "vue": "^2.5.11",
-    "vue-axios": "^2.0.2",
+    "vue-axios": "^2.0.0",
     "vue-style-loader": "^4.1.1",
     "webpack-merge": "^4.1.4"
   },
