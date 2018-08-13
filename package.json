@@ -30,7 +30,7 @@
     "solidity-sha3": "^0.4.1",
     "chai": "^4.1.2",
     "chai-http": "^4.0.0",
-    "mocha": "^5.2.0",
+    "mocha": "^5.2.0"
   },
   "author": "Mai Dong Giang <giangmd93@gmail.com> (https://www.izway.vn)",
   "license": "ISC"
