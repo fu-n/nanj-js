@@ -1,18 +1,19 @@
 'use strict';
+const config = require('./config');
 
 const CryptoJS = require('crypto-js');
-var Web3 = require('web3')
-const web3 = new Web3(new Web3.providers.HttpProvider(process.env.HTTPP_ROVIDER))
+const Web3 = require('web3')
+const web3 = new Web3(new Web3.providers.HttpProvider(config.http_provider))
 const coder = require('web3/lib/solidity/coder')
 const leftPad = require('left-pad')
 const solsha3 = require('solidity-sha3').default
 const utils = require("ethereumjs-util");
 const assert = require('assert')
 
-let TXRELAYAddress = process.env.TXRELAY_ADDRESS
-let NANJCOINAddress = process.env.ADDRESS_NANJCOIN_TEST
-let nanjCoinFounder = process.env.ADDRESS_NANJ_FOUNDER
-let metaNanjCoinManagerContractAddress = process.env.ADDRESS_META_NANJ_MANAGER
+let TXRELAYAddress = config.address_relay_tx
+let NANJCOINAddress = config.address_nanjcoin_test
+let nanjCoinFounder = config.address_nanj_founder
+let metaNanjCoinManagerContractAddress = config.address_meta_nanj_manager
 let zeroAddress = "0x0000000000000000000000000000000000000000"
 
 const server = require('../assets/server')
@@ -24,8 +25,8 @@ let NANJCoinContract = web3.eth.contract(NanJABI).at(NANJCOINAddress)
 let TXRELAY = web3.eth.contract(TXRELAYABI)
 let MetaNANJCOINManager = web3.eth.contract(MetaNANJCOINManagerABI)
 
-const appId = process.env.CLIENT_ID
-const secretKey = process.env.SECRET_KEY
+const appId = config.client_id
+const secretKey = config.secret_id
 const NanjServer = new server(appId, secretKey)
 
 const getAddressNanj = async function (address) {
@@ -75,9 +76,9 @@ const getBalanceNanj = async function (address) {
 }
 
 const sdkDeveloper = {
-  appId : process.env.CLIENT_ID,
-  secretKey : process.env.SECRET_KEY,
-  developerAddress : process.env.DEV_ADDRESS,
+  appId : appId,
+  secretKey : secretKey,
+  developerAddress : config.address_dev,
   getAppHash: () => { 
     // console.log(web3.sha3(this.appId + this.secretKey))
     return web3.sha3(sdkDeveloper.appId + sdkDeveloper.secretKey) 
