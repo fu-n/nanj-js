@@ -1,5 +1,5 @@
 'use strict';
-const config = require('./config');
+const config = require('../config');
 
 const CryptoJS = require('crypto-js');
 const Web3 = require('web3')
