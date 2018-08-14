@@ -1,5 +1,6 @@
 'use strict';
 
+var config = require('../config');
 var querystring = require('querystring');
 var http = require('http')
 
@@ -12,11 +13,11 @@ module.exports = class {
 	sentRelayTx(data, message) {
 		let postData = querystring.stringify(data);
 		var options = {
-			host: process.env.NANJ_HOST,
+			host: config.nanj_host,
 			port: 80,
-			path: process.env.PATH_RELAYTX,
+			path: config.path_relay_tx,
 			method: 'POST',
-			auth: process.env.BASIC_AUTH,
+			auth: config.basic_auth,
 			headers: {
 				'Client-ID':this.appId,
 				'Secret-Key':this.secretKey,
@@ -27,8 +28,6 @@ module.exports = class {
 
 		return new Promise((resolve, reject) => {
 		    var postHTTP = http.request(options, function(response) {
-				console.log(options.method + ':'+options.host+options.path)
-				console.log('STATUS: ' + response.statusCode);
 				response.setEncoding('utf8');
 				response.on('data', function (chunk) {
 					var objectData = JSON.parse(chunk);
@@ -51,11 +50,11 @@ module.exports = class {
 		let postData = querystring.stringify(data)
 
 		var options = {
-			host: process.env.NANJ_HOST,
+			host: config.nanj_host,
 			port: 80,
-			path: process.env.PATH_RELAY_NONCE+'?'+postData,
+			path: config.path_relay_nonce+'?'+postData,
 			method: 'GET',
-			auth: process.env.BASIC_AUTH,
+			auth: config.basic_auth,
 			headers: {
 				'Client-ID':this.appId,
 				'Secret-Key':this.secretKey
