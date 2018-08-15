@@ -1,6 +1,6 @@
 **PREVIEW RELEASE** This is a beta preview release with breaking changes! The current version is 0.1.0 
 </br>
-<img src="https://nanjcoin.com/img/header_img_01.png" width=50 style="background: #212529;border-radius: 5%;" />
+<img src="https://nanjcoin.com/nanjs.png" width=50 />
 # Nanjs - JavaScript API
 [![Join the chat at https://discord.gg/z3XHJD](https://discord.gg/z3XHJD)](https://discord.gg/z3XHJD)
 
