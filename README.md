@@ -2,7 +2,7 @@
 </br>
 <img src="https://nanjcoin.com/nanjs.png" width=100 />
 # Nanjs - JavaScript API
-[![Join the chat at https://discord.gg/z3XHJD](https://discord.gg/z3XHJD)](https://badges.gitter.im/Join%20Chat.svg)
+[![Join the chat at https://discord.gg/z3XHJD](https://badges.gitter.im/Join%20Chat.svg)]
 This is the Nanjs JavaScript API which connects to the Nanj-coin system.
 
 
