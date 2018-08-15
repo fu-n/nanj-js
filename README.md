@@ -1,19 +1,37 @@
-# nanjs
-=========
+**PREVIEW RELEASE** This is a beta preview release with breaking changes! The current version is 0.1.0 
+<img src="https://nanjcoin.com/img/header_img_01.png" width=200 />
+# Nanjs - JavaScript API
+[![Join the chat at https://discord.gg/z3XHJD](https://discord.gg/z3XHJD)](https://discord.gg/z3XHJD)
 
-A small library that adds commas to numbers
-
-## Installation
-
-  `npm install nanjs`
-
-## Usage
+This is the Nanjs JavaScript API which connects to the Nanj-coin system.
 
 
-## Tests
+### Node
 
-  `npm test`
+```bash
+npm install nanjs
+```
 
-## Contributing
+## Documentation
 
-Lorem ipsum dolor sit amet.
+Documentation can be found at [read the docs][docs]
+
+
+## Building
+
+### Requirements
+
+* [Node.js](https://nodejs.org)
+* npm
+
+```bash
+sudo apt-get update
+sudo apt-get install nodejs
+sudo apt-get install npm
+```
+
+### Testing (mocha)
+
+```bash
+npm test
+```
