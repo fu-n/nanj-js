@@ -1,8 +1,8 @@
 **PREVIEW RELEASE** This is a beta preview release with breaking changes! The current version is 0.1.0 
 </br>
-<img src="https://nanjcoin.com/nanjs.png" width=50 />
+<img src="https://nanjcoin.com/nanjs.png" width=100 />
 # Nanjs - JavaScript API
-[![Join the chat at https://discord.gg/z3XHJD](https://discord.gg/z3XHJD)](https://discord.gg/z3XHJD)
+[![Join the chat at https://discord.gg/z3XHJD](https://discord.gg/z3XHJD)]
 
 This is the Nanjs JavaScript API which connects to the Nanj-coin system.
 
