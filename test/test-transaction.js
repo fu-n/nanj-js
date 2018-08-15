@@ -1,16 +1,14 @@
-//Require the dev-dependencies
-let chai = require('chai')
-let chaiHttp = require('chai-http')
-let server = require('../index')
-let should = chai.should()
-// let should = chai.expect()
+'use strict';
 
-chai.use(chaiHttp)
+var nanjs = require('../index.js');
+var nanjTrans = nanjs.transaction;
 
-let from = '0xe79c03e29ee86c1d0af6053737dccb029402d0f3'
-let privKey = '0541a5d81178f67887203996fe596b4fd3de72244e86a371e295f660aab0f039'
-let privKeyNotValid = '1825ae307fa29ebdf4a84877197f4863d58a670832808f8e07cf6a136ee7e1af'
-let to = '0xfce1759a46647adfe4f9564320631c4f0a90deba'
+var from = '0xe79c03e29ee86c1d0af6053737dccb029402d0f3'
+var privKey = '0541a5d81178f67887203996fe596b4fd3de72244e86a371e295f660aab0f039'
+var privKeyNotValid = '1825ae307fa29ebdf4a84877197f4863d58a670832808f8e07cf6a136ee7e1af'
+var to = '0xfce1759a46647adfe4f9564320631c4f0a90deba'
+var amount = 5
+var message = 'unit test nanj transaction'
 
 describe('Testing NANJ transaction', () => {
 
@@ -18,72 +16,60 @@ describe('Testing NANJ transaction', () => {
 
         it('1. address and amount is required', (done) => {
 
-            let body = {}
-            
-            chai.request(server)
-                .post('/api/tx/relayTx')
-                .send(body)
-                .set('Content-Type', 'application/json')
-                .set('Accept', 'application/json')
-                .end((err, res) => {
-                    console.log(res.error.text);
-                    res.should.have.status(422);
+            nanjTrans.getRelayerTxHash('', '', 0, message).then(function(txHash) {
+
+                if (txHash.status !== 200) {
+                    console.log(txHash);
                     done();
-                });
+                }
+                
+            }, function(err) {
+                console.log(err)
+                done();
+            })
             
         });
 
         it('2. Private key is wrong', (done) => {
 
-            let body = {from: from, to: to, value:5, privKey: new Buffer(privKeyNotValid, 'hex')}
-            
-            chai.request(server)
-                .post('/api/tx/relayTx')
-                .send(body)
-                .set('Content-Type', 'application/json')
-                .set('Accept', 'application/json')
-                .end((err, res) => {
-                    if (res.body.statusCode !== 200) {
-                        // server response error 
-                        console.log(res.body.statusCode+': '+res.body.message);
-                        res.should.have.status(200);
+            nanjTrans.getRelayerTxHash(from, to, amount, message).then(function(txHash) {
+
+                let data = txHash.data
+                let hash = txHash.hash
+                let destinationAddress = txHash.destinationAddress
+
+                let dataHash = nanjTrans.getHashSign(data, hash, privKeyNotValid, destinationAddress)
+
+                nanjTrans.send(dataHash).then(function(response) {
+                    if (response.statusCode !== 200) {
+                        console.log(response.message);
+                        done();
                     }
-                    
+                }, function(err) {
+                    console.log(err)
                     done();
-                });
-        });
-
-        it('3. Amount equal 0', (done) => {
-
-            let body = {from: from, to: to, value:0, privKey: new Buffer(privKey, 'hex')}
-            
-            chai.request(server)
-                .post('/api/tx/relayTx')
-                .send(body)
-                .set('Content-Type', 'application/json')
-                .set('Accept', 'application/json')
-                .end((err, res) => {
-                    console.log(res.error.text);
-                    res.should.have.status(422);
-                    done();
-                });
+                })
+                
+            }, function(err) {
+                console.log(err)
+                done();
+            })
             
         });
 
-        it('4. Amount too big', (done) => {
+        it('3. Amount too big', (done) => {
 
-            let body = {from: from, to: to, value:5000, privKey: new Buffer(privKey, 'hex')}
-            
-            chai.request(server)
-                .post('/api/tx/relayTx')
-                .send(body)
-                .set('Content-Type', 'application/json')
-                .set('Accept', 'application/json')
-                .end((err, res) => {
-                    console.log(res.error.text);
-                    res.should.have.status(403);
+            nanjTrans.getRelayerTxHash(from, to, 999999999, message).then(function(txHash) {
+                
+                if (txHash.status !== 200) {
+                    console.log(txHash);
                     done();
-                });
+                }
+                
+            }, function(err) {
+                console.log(err)
+                done();
+            })
             
         });
     });
@@ -91,22 +77,25 @@ describe('Testing NANJ transaction', () => {
     describe('- Success -', () => {
         it('1. Transaction success', (done) => {
 
-            let body = {from: from, to: to, value:5, privKey: new Buffer(privKey, 'hex')}
-            
-            chai.request(server)
-                .post('/api/tx/relayTx')
-                .send(body)
-                .set('Content-Type', 'application/json')
-                .set('Accept', 'application/json')
-                .end((err, res) => {
-                    if (res.body.statusCode === 200) {
-                        // server response error 
-                        console.log(res.body.statusCode+': '+res.body.message);
-                        res.should.have.status(200);
-                    }
-                    
+            nanjTrans.getRelayerTxHash(from, to, amount, message).then(function(txHash) {
+                let data = txHash.data
+                let hash = txHash.hash
+                let destinationAddress = txHash.destinationAddress
+
+                let dataHash = nanjTrans.getHashSign(data, hash, privKey, destinationAddress)
+
+                nanjTrans.send(dataHash).then(function(response) {
+                    console.log(response)
                     done();
-                });
+                }, function(err) {
+                    console.log(err)
+                    done();
+                })
+                
+            }, function(err) {
+                console.log(err)
+                done();
+            })
             
         });
     });
