@@ -74,4 +74,33 @@ module.exports = class {
 	    })
 
 	}
+
+	getTransactionHistory(address, page=1) {
+
+		var options = {
+			host: config.nanj_host,
+			path: '/api/tx/list/'+address+'?limit=10&page='+page+'&order_by=desc',
+			method: 'GET',
+			auth: config.basic_auth,
+			headers: {
+				'Client-ID':this.appId,
+				'Secret-Key':this.secretKey
+			}
+		};
+
+		return new Promise((resolve, reject) => {
+		    var postHTTP = http.request(options, function(response) {
+				response.setEncoding('utf8');
+				response.on('data', function (chunk) {
+					var objectData = JSON.parse(chunk);
+					if (response.statusCode == 200) {
+						resolve(objectData)
+					}
+
+					return reject(objectData)
+				});
+			}).end();
+	    })
+
+	}
 };

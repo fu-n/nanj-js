@@ -57,7 +57,7 @@ describe('Testing NANJ transaction', () => {
             
         });
 
-        it('3. Amount too big', (done) => {
+        it('3. NANJ amount not enought', (done) => {
 
             nanjTrans.getRelayerTxHash(from, to, 999999999, message).then(function(txHash) {
                 
