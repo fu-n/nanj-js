@@ -38,13 +38,16 @@ describe('Testing NANJ transaction', () => {
                 let hash = txHash.hash
                 let destinationAddress = txHash.destinationAddress
 
-                let dataHash = nanjTrans.getHashSign(data, hash, privKeyNotValid, destinationAddress)
-
-                nanjTrans.send(dataHash).then(function(response) {
-                    if (response.statusCode !== 200) {
-                        console.log(response.message);
+                nanjTrans.getHashSign(data, hash, privKeyNotValid, destinationAddress).then(function(dataHash) {
+                    nanjTrans.send(dataHash).then(function(response) {
+                        if (response.statusCode !== 200) {
+                            console.log(response.message);
+                            done();
+                        }
+                    }, function(err) {
+                        console.log(err)
                         done();
-                    }
+                    })
                 }, function(err) {
                     console.log(err)
                     done();
@@ -82,11 +85,16 @@ describe('Testing NANJ transaction', () => {
                 let hash = txHash.hash
                 let destinationAddress = txHash.destinationAddress
 
-                let dataHash = nanjTrans.getHashSign(data, hash, privKey, destinationAddress)
+                nanjTrans.getHashSign(data, hash, privKey, destinationAddress).then(function(dataHash) {
 
-                nanjTrans.send(dataHash).then(function(response) {
-                    console.log(response)
-                    done();
+                    nanjTrans.send(dataHash).then(function(response) {
+                        console.log(response)
+                        done();
+                    }, function(err) {
+                        console.log(err)
+                        done();
+                    })
+
                 }, function(err) {
                     console.log(err)
                     done();

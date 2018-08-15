@@ -38,7 +38,7 @@ const nanjs = require('nanjs')
 // It's a async function
 // generate addresses from mnemonic
 // password default is 123456789
-var mnemonic = 'brain surround have swap horror body response double fire dumb bring hazard'
+var mnemonic = nanjs.wallet.generateMnemonic()
 console.log( nanjs.wallet.createWallet(mnemonic) )
 ```
 
@@ -52,7 +52,7 @@ var password = '123456789'
 console.log( nanjs.wallet.importWallet(mnemonic, password) )
 ```
 
-**Transaction**
+**NANJ Transaction**
 
 ```js
 // It's a async function
@@ -68,14 +68,15 @@ nanjs.transaction.getRelayerTxHash(from, to, amount, message).then(function(txHa
     let hash = txHash.hash
     let destinationAddress = txHash.destinationAddress
 
-    let dataHash = nanjs.transaction.getHashSign(data, hash, privateKey, destinationAddress)
-
-    nanjs.transaction.send(dataHash).then(function(response) {
-      console.log(response)
+    nanjs.transaction.getHashSign(data, hash, privateKey, destinationAddress).then(function(dataHash) {
+      nanjs.transaction.send(dataHash).then(function(response) {
+        console.log(response)
+      }, function(err) {
+        console.log(err)
+      })
     }, function(err) {
       console.log(err)
     })
-    
   }, function(err) {
     console.log(err)
   })
