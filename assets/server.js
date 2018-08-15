@@ -14,7 +14,6 @@ module.exports = class {
 		let postData = querystring.stringify(data);
 		var options = {
 			host: config.nanj_host,
-			port: 80,
 			path: config.path_relay_tx,
 			method: 'POST',
 			auth: config.basic_auth,
@@ -51,7 +50,6 @@ module.exports = class {
 
 		var options = {
 			host: config.nanj_host,
-			port: 80,
 			path: config.path_relay_nonce+'?'+postData,
 			method: 'GET',
 			auth: config.basic_auth,
