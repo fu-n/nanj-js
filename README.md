@@ -1,4 +1,4 @@
-# light-wallet
+# nanjs
 =========
 
 A small library that adds commas to numbers
