@@ -12,10 +12,11 @@ This is the Nanjs JavaScript API which connects to the Nanj-coin system.
 - [x] Create NANJ Wallet
 - [x] Import NANJ Wallet via Private Key / Key Store
 - [x] Export Private Key/ Key Store from NANJ Wallet
+- [x] Generate NANJ Address
+- [x] Generate QRCode from Wallet Address
 - [x] Transfer NANJ Coin
-- [ ] Transaction History
-- [ ] Get NANJ Rate in JPY
-- [ ] generate QRCode from Wallet Address
+- [x] Transaction History
+- [x] Get NANJ Rate in JPY
 
 ### Requirements
 
@@ -34,33 +35,53 @@ This is the Nanjs JavaScript API which connects to the Nanj-coin system.
 ## API
 
 **(static) init**
-
 ```js
-const nanjs = require('nanjs')
+var nanjs = require('nanjs')
 ```
 
 **createWallet(): Create Wallet**
-
 ```js
 // It's a async function
-// generate addresses from mnemonic
+// generate address from mnemonic
 // password default is 123456789
 var mnemonic = nanjs.wallet.generateMnemonic()
 console.log( nanjs.wallet.createWallet(mnemonic) )
 ```
 
 **importWallet(): Import Wallet**
-
 ```js
 // It's a async function
-// generate addresses from mnemonic
+// generate address from mnemonic
 var mnemonic = 'brain surround have swap horror body response double fire dumb bring hazard'
 var password = '123456789'
 console.log( nanjs.wallet.importWallet(mnemonic, password) )
 ```
 
-**NANJ Transaction**
+**Generate NANJ Address**
+```js
+// It's a async function
+// generate nanj address
+var address = '0xe79c03e29ee86c1d0af6053737dccb029402d0f3'
+var privateKey = '0541a5d81178f67887203996fe596b4fd3de72244e86a371e295f660aab0f039'
+nanjs.wallet.generateAddress(address, privateKey).then(function(nanjAddress) {
+    console.log(nanjAddress)
+  }, function(err) {
+    console.log(err)
+  })
+```
 
+**Generate QRCode from Wallet Address**
+```js
+// Generate QRCode
+// Response is a base64 image 
+var address = '0xe79c03e29ee86c1d0af6053737dccb029402d0f3'
+
+var base64Url = nanjs.wallet.QRCodeAddress(address)
+
+// Using in html: <img src="base64Url">
+```
+
+**Transfer NANJ Coin**
 ```js
 // It's a async function
 // make transaction
@@ -87,9 +108,34 @@ nanjs.transaction.getRelayerTxHash(from, to, amount, message).then(function(txHa
   }, function(err) {
     console.log(err)
   })
-
-
 ```
+
+**Transaction History**
+```js
+// It's a async function
+// Get transaction history
+var address = '0xe79c03e29ee86c1d0af6053737dccb029402d0f3'
+var page = 1
+
+nanjs.transaction.history(address, page).then(function(response) {
+    console.log(response)
+  }, function(err) {
+    console.log(err)
+  })
+```
+
+**Get NANJ Rate in JPY**
+```js
+// Get NANJ Rate in JPY
+var currency = 'jpy'
+
+nanjs.transaction.nanjRate(currency).then(function(response) {
+    console.log(response)
+  }, function(err) {
+    console.log(err)
+  })
+```
+
 
 ### Testing (mocha)
 

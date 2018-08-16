@@ -127,3 +127,41 @@ describe('Testing import wallet', () => {
         });
     });
 });
+
+describe('Testing global wallet', () => {
+    describe('- Generate NANJ Address -', () => {
+        it('1. Valid param address', (done) => {
+            nanjs.wallet.generateAddress('', '').then(function(response) {
+                console.log(response)
+                done();
+            })
+        });
+
+        it('2. Valid param private key', (done) => {
+            var from = '0xe79c03e29ee86c1d0af6053737dccb029402d0f3'
+            nanjs.wallet.generateAddress(from, '').then(function(response) {
+                console.log(response)
+                done();
+            })
+        });
+
+        it('3. Success', (done) => {
+            var from = '0xe79c03e29ee86c1d0af6053737dccb029402d0f3'
+            var privKey = '0541a5d81178f67887203996fe596b4fd3de72244e86a371e295f660aab0f039'
+            nanjs.wallet.generateAddress(from, privKey).then(function(response) {
+                console.log(response)
+                done();
+            })
+        });
+    });
+
+    it('QRCode', (done) => {
+        var QRCode = require('qrcode')
+
+        var address = '0xe79c03e29ee86c1d0af6053737dccb029402d0f3'
+        QRCode.toDataURL(address, function (err, url) {
+            console.log(url);
+            done();
+        })
+    });
+})

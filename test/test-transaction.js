@@ -10,6 +10,7 @@ var to = '0xfce1759a46647adfe4f9564320631c4f0a90deba'
 var amount = 5
 var message = 'unit test nanj transaction'
 
+
 describe('Testing NANJ transaction', () => {
 
     describe('- Valid param -', () => {
@@ -108,4 +109,38 @@ describe('Testing NANJ transaction', () => {
         });
     });
 
+});
+
+describe('Testing Global Transaction', () => {
+    it('Get transaction history', (done) => {
+        nanjTrans.history(from).then(function(response) {
+            console.log(JSON.parse(response))
+            done();
+        }, function(err) {
+            console.log(err)
+            done();
+        })
+    });
+
+    describe('- Get NANJ Rate -', () => {
+        it('1. Currency is required.', (done) => {
+            nanjTrans.nanjRate('').then(function(response) {
+                // console.log(response)
+                done();
+            }, function(err) {
+                console.log(err)
+                done();
+            })
+        });
+
+        it('1. Success.', (done) => {
+            nanjTrans.nanjRate('jpy').then(function(response) {
+                console.log(response)
+                done();
+            }, function(err) {
+                console.log(err)
+                done();
+            })
+        });
+    });
 });

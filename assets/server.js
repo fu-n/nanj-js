@@ -92,7 +92,36 @@ module.exports = class {
 		    var postHTTP = http.request(options, function(response) {
 				response.setEncoding('utf8');
 				response.on('data', function (chunk) {
-					var objectData = JSON.parse(chunk);
+					var objectData = JSON.parse(JSON.stringify(chunk));
+					if (response.statusCode == 200) {
+						resolve(objectData)
+					}
+
+					return reject(objectData)
+				});
+			}).end();
+	    })
+
+	}
+
+	nanjRate(currency) {
+
+		var options = {
+			host: config.nanj_host,
+			path: '/api/coin/nanjcoin/currency/'+currency,
+			method: 'GET',
+			auth: config.basic_auth,
+			headers: {
+				'Client-ID':this.appId,
+				'Secret-Key':this.secretKey
+			}
+		};
+
+		return new Promise((resolve, reject) => {
+		    var postHTTP = http.request(options, function(response) {
+				response.setEncoding('utf8');
+				response.on('data', function (chunk) {
+					var objectData = JSON.parse(JSON.stringify(chunk));
 					if (response.statusCode == 200) {
 						resolve(objectData)
 					}
