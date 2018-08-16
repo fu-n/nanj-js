@@ -64,6 +64,25 @@ const generateNanjAddress = async function (address, privKey) {
     return addressNanj
 }
 
+const signNanjAddress = async function (address, privKey) {
+    let NANJCOINManager = MetaNANJCOINManager.at(metaNanjCoinManagerContractAddress)
+    let txRelayContract = TXRELAY.at(TXRELAYAddress)
+    let addressNanj = await NANJCOINManager.getWallet.call(address)
+    let response = ''
+
+    if (addressNanj == zeroAddress) {
+        let types = ['address']
+        let params = [address]
+
+        let p = await signPayload(address, txRelayContract, zeroAddress, metaNanjCoinManagerContractAddress,
+        'createWallet', types, params, new Buffer(privKey, 'hex'))
+
+        return p;
+    }
+
+    return response;
+}
+
 const getBalanceNanj = async function (address) {
     let balance = await NANJCoinContract.balanceOf(address)
 
