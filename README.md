@@ -15,7 +15,7 @@ This is the Nanjs JavaScript API which connects to the Nanj-coin system.
 - [x] Transfer NANJ Coin
 - [ ] Transaction History
 - [ ] Get NANJ Rate in JPY
-- [ ] make Wallet Address via QRCode
+- [ ] generate QRCode from Wallet Address
 
 ### Requirements
 
