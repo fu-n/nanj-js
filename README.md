@@ -22,17 +22,14 @@ This is the Nanjs JavaScript API which connects to the Nanj-coin system.
 * [Node.js](https://nodejs.org)
 * npm
 
-```bash
-sudo apt-get update
-sudo apt-get install nodejs
-sudo apt-get install npm
-```
-
 ## Installation
 
 ```shell
-npm install nanjs
+/directory$ npm install nanjs
 ```
+
+## Set config file
+
 
 ## API
 
