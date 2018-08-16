@@ -7,6 +7,16 @@ This is the Nanjs JavaScript API which connects to the Nanj-coin system.
 
 ## Building
 
+### Features
+
+- [x] Create NANJ Wallet
+- [x] Import NANJ Wallet via Private Key / Key Store
+- [x] Export Private Key/ Key Store from NANJ Wallet
+- [x] Transfer NANJ Coin
+- [ ] Transaction History
+- [ ] Get NANJ Rate in JPY
+- [ ] make Wallet Address via QRCode
+
 ### Requirements
 
 * [Node.js](https://nodejs.org)
