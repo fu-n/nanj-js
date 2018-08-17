@@ -151,6 +151,7 @@ For the versions available, see the [tags on this repository](https://github.com
 
 Inspired by code from the following great projects:
 
+* https://www.npmjs.com/package/eth-hd-wallet
 * https://github.com/ConsenSys/eth-lightwallet
 * https://nanjcoin.com/sdk
 
