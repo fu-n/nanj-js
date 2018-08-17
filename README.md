@@ -147,6 +147,13 @@ npm test
 
 For the versions available, see the [tags on this repository](https://github.com/NANJ-COIN/nanj-js/tags). 
 
+## Acknowledgements
+
+Inspired by code from the following great projects:
+
+* https://github.com/ConsenSys/eth-lightwallet
+* https://nanjcoin.com/sdk
+
 ## Authors
 
 * **NANJ TEAM** [NANJ](https://nanjcoin.com/), support@nanjcoin.com
