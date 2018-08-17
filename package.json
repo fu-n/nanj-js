@@ -1,6 +1,6 @@
 {
   "name": "nanjs",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Package help to create, import NANJ wallet, make NANJ transaction.",
   "main": "index.js",
   "scripts": {
