@@ -30,68 +30,108 @@ const secretKey = config.secret_id
 const NanjServer = new server(appId, secretKey)
 
 const getAddressNanj = async function (address) {
-    let NANJCOINManager = MetaNANJCOINManager.at(metaNanjCoinManagerContractAddress)
-    let addressNanj = await NANJCOINManager.getWallet.call(address)
-
-    if (addressNanj == zeroAddress)
-        return address
-    
-    return addressNanj
+    return new Promise((resolve) => {
+        let NANJCOINManager = MetaNANJCOINManager.at(metaNanjCoinManagerContractAddress)
+        NANJCOINManager.getWallet.call(address, (err,addressNanj) => {
+            if (err) {
+                console.log(err);
+                resolve(zeroAddress);
+                return;
+            }
+            if (addressNanj == zeroAddress) {
+                resolve(address);
+                return;
+            }
+            resolve(addressNanj);
+        });
+    });
 }
 
 const generateNanjAddress = async function (address, privKey) {
-    // console.log(address)
-    // console.log(privKey)
-    let NANJCOINManager = MetaNANJCOINManager.at(metaNanjCoinManagerContractAddress)
-    let txRelayContract = TXRELAY.at(TXRELAYAddress)
-    let addressNanj = await NANJCOINManager.getWallet.call(address)
-    if (addressNanj == zeroAddress) {
-          let types = ['address']
-          let params = [address]
-
-          let p = await signPayload(address, txRelayContract, zeroAddress, metaNanjCoinManagerContractAddress,
-            'createWallet', types, params, new Buffer(privKey, 'hex'))
-          // console.log(p)
-          
-          NanjServer.sentRelayTx(p, 'create wallet').then(function(result) {
-                let founderWallet = NANJCOINManager.getWallet.call(address)
-                // console.log('gene nanj: '+founderWallet)
-                return founderWallet
-            }, function(err) {
-                return zeroAddress
-            })
-    }
-    return addressNanj
+    return new Promise((resolve) => {
+        //console.log(address)
+        //console.log(privKey)
+        let NANJCOINManager = MetaNANJCOINManager.at(metaNanjCoinManagerContractAddress)
+        let txRelayContract = TXRELAY.at(TXRELAYAddress)
+        NANJCOINManager.getWallet.call(address, (err,addressNanj) => {
+            if (err) {
+                console.log(err);
+                resolve(zeroAddress);
+                return;
+            }
+            if (addressNanj != zeroAddress) {
+                resolve(addressNanj);
+                return;
+            }
+            let types = ['address']
+            let params = [address]
+            signPayload(address, txRelayContract, zeroAddress, metaNanjCoinManagerContractAddress, 'createWallet', types, params, new Buffer(privKey, 'hex')).then((p) => {
+                //console.log(p)
+                NanjServer.sentRelayTx(p, 'create wallet').then((result) => {
+                    //console.log(result);
+                    NANJCOINManager.getWallet.call(address, (err,founderWallet) => {
+                        if (err) {
+                            console.log(err);
+                            resolve(zeroAddress);
+                            return;
+                        }
+                        //console.log('gene nanj: ' + founderWallet)
+                        resolve(founderWallet);
+                    });
+                }).catch((err) => {
+                    console.log(err);
+                    resolve(zeroAddress);
+                })
+            }).catch((err) => {
+                console.log(err);
+                resolve(zeroAddress);
+            });
+        });
+    });
 }
 
 const signNanjAddress = async function (address, privKey) {
-    let NANJCOINManager = MetaNANJCOINManager.at(metaNanjCoinManagerContractAddress)
-    let txRelayContract = TXRELAY.at(TXRELAYAddress)
-    let addressNanj = await NANJCOINManager.getWallet.call(address)
-    let response = ''
-
-    if (addressNanj == zeroAddress) {
-        let types = ['address']
-        let params = [address]
-
-        let p = await signPayload(address, txRelayContract, zeroAddress, metaNanjCoinManagerContractAddress,
-        'createWallet', types, params, new Buffer(privKey, 'hex'))
-
-        return p;
-    }
-
-    return response;
+    return new Promise((resolve) => {
+        let NANJCOINManager = MetaNANJCOINManager.at(metaNanjCoinManagerContractAddress)
+        let txRelayContract = TXRELAY.at(TXRELAYAddress)
+        NANJCOINManager.getWallet.call(address, (err,addressNanj) => {
+            if (err) {
+                console.log(err);
+                resolve('');
+                return;
+            }
+            if (addressNanj != zeroAddress) {
+                resolve(addressNanj);
+                return;
+            }
+            let types = ['address']
+            let params = [address]
+            signPayload(address, txRelayContract, zeroAddress, metaNanjCoinManagerContractAddress, 'createWallet', types, params, new Buffer(privKey, 'hex')).then((p) => {
+                resolve(p);
+            }).catch((err) => {
+                console.log(err);
+                resolve('');
+            });
+        });
+    });
 }
 
 const getBalanceNanj = async function (address) {
-    let balance = await NANJCoinContract.balanceOf(address)
-
-    // console.log('balance: '+balance)
-
-    if (balance > 0) 
-        return (balance/100000000);
-
-    return 0;
+    return new Promise((resolve,reject) => {
+        NANJCoinContract.balanceOf(address, (err,balance) => {
+            if (err) {
+                console.log(err);
+                reject(err);
+                return;
+            }
+            //console.log('balance: '+balance)
+            if (balance <= 0) {
+                resolve(0);
+                return;
+            }
+            resolve(balance/100000000);
+        });
+    });
 }
 
 const sdkDeveloper = {
@@ -228,5 +268,6 @@ module.exports = {
     address: getAddressNanj,
     generate: generateDataRelayerTx,
     getBalanceNanj: getBalanceNanj,
-    getRelayerTxHash: getRelayerTxHash
+    getRelayerTxHash: getRelayerTxHash,
+    signNanjAddress: signNanjAddress,
 };
